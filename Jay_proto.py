@@ -37,7 +37,9 @@ def main():
             break
 
         else:
-            response=dialogpt_conv(user_command)
+            # response=dialogpt_conv(user_command)
+            # response=flant5_conv(user_command)
+            response=conversational_conv(user_command)
             print(response)
             speak(response)
             
