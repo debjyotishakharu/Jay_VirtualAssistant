@@ -36,4 +36,27 @@ def dialogpt_conv(user_command):
     output=tokenizer.decode(chat_history_ids[:, bot_input_ids.shape[-1]:][0], skip_special_tokens=True)
     return output
 #################################################################################
+##### Google flan t5 large #####
 
+from transformers import T5Tokenizer, T5ForConditionalGeneration
+
+tokenizer = T5Tokenizer.from_pretrained("google/flan-t5-large")
+model = T5ForConditionalGeneration.from_pretrained("google/flan-t5-large", device_map="auto")
+
+def flant5_conv(user_command):
+    input_text = user_command
+    input_ids = tokenizer(input_text, return_tensors="pt").input_ids.to("cuda")
+
+    outputs = model.generate(input_ids)
+    response=tokenizer.decode(outputs[0])
+    return response
+
+####################################################################################
+
+from transformers import pipeline, Conversation
+converse = pipeline("conversational")
+
+def conversational_conv(user_command):
+    conversation_1 = Conversation(user_command)
+    response=converse([conversation_1])
+    return response[1]["content"]
